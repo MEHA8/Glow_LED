@@ -1,0 +1,26 @@
+#include <msp430.h>
+
+/**
+ * main.c
+ */
+int main(void)
+{
+    volatile unsigned long i; // Declare a volatile variable for delay
+
+    WDTCTL = WDTPW | WDTHOLD; // Stop the Watchdog Timer
+    P1OUT &= ~BIT2;           // Clear P1.0 output
+    P1DIR |= BIT2;            // Set P1.0 as output
+
+#ifdef PM5CTL0                // Only for devices with GPIO high-impedance mode
+    PM5CTL0 &= ~LOCKLPM5;     // Disable GPIO power-on default high-impedance mode
+#endif
+
+    while (1) // Infinite loop
+    {
+        P1OUT ^= BIT2; // Toggle P1.0 using XOR
+        for (i = 0; i < 10000; i++) {
+            // Simple delay loop
+        }
+    }
+}
+
